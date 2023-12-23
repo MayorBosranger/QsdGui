@@ -2,8 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
-import java.util.List;
 
 public class Gui implements ActionListener {
     private JFrame KadasterGui;
@@ -12,8 +10,8 @@ public class Gui implements ActionListener {
     private JPanel activePanel;
 
     JMenuBar Menubar = new JMenuBar();
-    JMenuItem Verzoek = new JMenuItem("Verzoek");
-    JMenuItem Authorisatie = new JMenuItem("Authorisatie");
+    JMenuItem VerzoekItem = new JMenuItem("Verzoek");
+    JMenuItem AuthorisatieItem = new JMenuItem("Authorisatie");
 
     public Gui(){
         KadasterGui = new JFrame("KadasterGui");
@@ -30,10 +28,10 @@ public class Gui implements ActionListener {
     }
 
     private JMenuBar MakeMenuBar(){
-        Verzoek.addActionListener(this);
-        Authorisatie.addActionListener(this);
-        Menubar.add(Verzoek);
-        Menubar.add(Authorisatie);
+        VerzoekItem.addActionListener(this);
+        AuthorisatieItem.addActionListener(this);
+        Menubar.add(VerzoekItem);
+        Menubar.add(AuthorisatieItem);
         return Menubar;
     }
 
@@ -54,14 +52,14 @@ public class Gui implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()){
             case("Verzoek"):
-                Verzoek.setEnabled(false);
-                Authorisatie.setEnabled(true);
+                VerzoekItem.setEnabled(false);
+                AuthorisatieItem.setEnabled(true);
                 activePanel = getVerzoekPanel();
                 activateActivePanel();
                 break;
             case ("Authorisatie"):
-                Authorisatie.setEnabled(false);
-                Verzoek.setEnabled(true);
+                AuthorisatieItem.setEnabled(false);
+                VerzoekItem.setEnabled(true);
                 activePanel = getAuthorisatiePanel();
                 activateActivePanel();
                 break;
