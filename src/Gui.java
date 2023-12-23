@@ -5,9 +5,10 @@ import java.awt.event.ActionListener;
 
 public class Gui implements ActionListener {
     private JFrame KadasterGui;
+    private CardLayout cardLayout;
     private Verzoek verzoek;
     private Authorisatie authorisatie;
-    private JPanel activePanel;
+    private JPanel mainPanel;
 
     JMenuBar Menubar = new JMenuBar();
     JMenuItem VerzoekItem = new JMenuItem("Verzoek");
@@ -20,8 +21,7 @@ public class Gui implements ActionListener {
 
         KadasterGui.setJMenuBar(MakeMenuBar());
 
-        activePanel = getAuthorisatiePanel();
-        KadasterGui.add(activePanel);
+        setUpPanels();
         KadasterGui.pack();
         KadasterGui.setLocationRelativeTo(null);
         KadasterGui.setVisible(true);
@@ -35,18 +35,15 @@ public class Gui implements ActionListener {
         return Menubar;
     }
 
-    private JPanel getVerzoekPanel(){
-        if (verzoek == null){
-            verzoek = new Verzoek();
-            return verzoek.getPanel();
-        }else return verzoek.getPanel();
-    }
-
-    private JPanel getAuthorisatiePanel(){
-        if (authorisatie == null){
-            authorisatie = new Authorisatie();
-            return authorisatie.getPanel();
-        }else return authorisatie.getPanel();
+    private void setUpPanels(){
+        verzoek = new Verzoek();
+        authorisatie = new Authorisatie();
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
+        KadasterGui.add(mainPanel);
+        mainPanel.add(verzoek, "verzoek");
+        mainPanel.add(authorisatie, "authorisatie");
+        cardLayout.show(mainPanel, "verzoek");
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -54,21 +51,15 @@ public class Gui implements ActionListener {
             case("Verzoek"):
                 VerzoekItem.setEnabled(false);
                 AuthorisatieItem.setEnabled(true);
-                activePanel = getVerzoekPanel();
-                activateActivePanel();
+                cardLayout.show(mainPanel, "verzoek");
                 break;
             case ("Authorisatie"):
                 AuthorisatieItem.setEnabled(false);
                 VerzoekItem.setEnabled(true);
-                activePanel = getAuthorisatiePanel();
-                activateActivePanel();
+                cardLayout.show(mainPanel, "authorisatie");
                 break;
         }
     }
 
-    private void activateActivePanel(){
-        KadasterGui.getContentPane().removeAll();
-        KadasterGui.add(activePanel);
-    }
 
 }

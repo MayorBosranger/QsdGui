@@ -1,25 +1,12 @@
 import jdk.jshell.Snippet;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class Authorisatie implements GuiPanel{
-    JPanel authorisatiePanel;
+public class Authorisatie extends JPanel{
     public Authorisatie(){
-        authorisatiePanel = new JPanel();
-
-        JLabel label = new JLabel("Authorisatie");
-
-        authorisatiePanel.add(label);
-    }
-
-    @Override
-    public JPanel getPanel() {
-        return authorisatiePanel;
-    }
-
-    @Override
-    public GuiPanel getSoort() {
-        return this;
+        setBackground(Color.white);
+        add(new JLabel("Authorisatie"));
     }
 
 }
