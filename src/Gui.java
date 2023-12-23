@@ -10,29 +10,54 @@ public class Gui implements ActionListener {
     private Authorisatie authorisatie;
     private JPanel mainPanel;
 
-    JMenuBar Menubar = new JMenuBar();
-    JMenuItem VerzoekItem = new JMenuItem("Verzoek");
-    JMenuItem AuthorisatieItem = new JMenuItem("Authorisatie");
+    JMenuBar Menubar;
+    JMenuItem verzoekItem;
+    JMenuItem authorisatieItem;
 
     public Gui(){
         KadasterGui = new JFrame("KadasterGui");
         KadasterGui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         KadasterGui.setPreferredSize(new Dimension(1000,600));
 
-        KadasterGui.setJMenuBar(MakeMenuBar());
+        MakeMenuBar();
+        KadasterGui.setJMenuBar(Menubar);
 
         setUpPanels();
         KadasterGui.pack();
-        KadasterGui.setLocationRelativeTo(null);
+//        KadasterGui.setLocationRelativeTo(null);
         KadasterGui.setVisible(true);
     }
 
-    private JMenuBar MakeMenuBar(){
-        VerzoekItem.addActionListener(this);
-        AuthorisatieItem.addActionListener(this);
-        Menubar.add(VerzoekItem);
-        Menubar.add(AuthorisatieItem);
-        return Menubar;
+    private void MakeMenuBar(){
+        verzoekItem = new JMenuItem("Verzoek");
+        authorisatieItem = new JMenuItem("Authorisatie");
+        Menubar = new JMenuBar();
+        menubarLayout();
+        verzoekItem.addActionListener(this);
+        authorisatieItem.addActionListener(this);
+        Menubar.add(verzoekItem);
+        Menubar.add(authorisatieItem);
+    }
+
+    private void menubarLayout(){
+        verzoekItem.setMaximumSize(new Dimension(150, 1000));
+        authorisatieItem.setMaximumSize(new Dimension(150, 1000));
+        authorisatieItem.setBackground(Color.black);
+        authorisatieItem.setForeground(Color.white);
+        verzoekItem.setBackground(Color.black);
+        verzoekItem.setForeground(Color.white);
+        Menubar.setOpaque(true);
+        Menubar.setBackground(Color.black);
+    }
+
+    private void pressed(JMenuItem item){
+        item.setForeground(new Color(200,200,200));
+        item.setBackground(new Color(100,100,100));
+    }
+
+    private void unPressed(JMenuItem item){
+        item.setForeground(Color.black);
+        item.setBackground(Color.white);
     }
 
     private void setUpPanels(){
@@ -49,13 +74,13 @@ public class Gui implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()){
             case("Verzoek"):
-                VerzoekItem.setEnabled(false);
-                AuthorisatieItem.setEnabled(true);
+                pressed(verzoekItem);
+                unPressed(authorisatieItem);
                 cardLayout.show(mainPanel, "verzoek");
                 break;
             case ("Authorisatie"):
-                AuthorisatieItem.setEnabled(false);
-                VerzoekItem.setEnabled(true);
+                pressed(authorisatieItem);
+                unPressed(verzoekItem);
                 cardLayout.show(mainPanel, "authorisatie");
                 break;
         }
