@@ -8,11 +8,13 @@ public class Gui implements ActionListener {
     private CardLayout cardLayout;
     private Verzoek verzoek;
     private Authorisatie authorisatie;
+    private Instellingen instellingen;
     private JPanel mainPanel;
 
     JMenuBar Menubar;
-    JMenuItem verzoekItem;
-    JMenuItem authorisatieItem;
+    JMenuItem verzoekItem = new JMenuItem("Verzoek");
+    JMenuItem authorisatieItem = new JMenuItem("Authorisatie");
+    JMenuItem instellingenItem = new JMenuItem("Instellingen");
 
     public Gui(){
         KadasterGui = new JFrame("KadasterGui");
@@ -24,30 +26,25 @@ public class Gui implements ActionListener {
 
         setUpPanels();
         KadasterGui.pack();
-//        KadasterGui.setLocationRelativeTo(null);
         KadasterGui.setVisible(true);
     }
 
     private void MakeMenuBar(){
-        verzoekItem = new JMenuItem("Verzoek");
-        authorisatieItem = new JMenuItem("Authorisatie");
         Menubar = new JMenuBar();
         menubarLayout();
         verzoekItem.addActionListener(this);
         authorisatieItem.addActionListener(this);
+        instellingenItem.addActionListener(this);
         Menubar.add(verzoekItem);
         Menubar.add(authorisatieItem);
+        Menubar.add(instellingenItem);
     }
 
     private void menubarLayout(){
         verzoekItem.setMaximumSize(new Dimension(150, 1000));
         authorisatieItem.setMaximumSize(new Dimension(150, 1000));
-        authorisatieItem.setBackground(Color.black);
-        authorisatieItem.setForeground(Color.white);
-        verzoekItem.setBackground(Color.black);
-        verzoekItem.setForeground(Color.white);
+        instellingenItem.setMaximumSize(new Dimension(150, 1000));
         Menubar.setOpaque(true);
-        Menubar.setBackground(Color.black);
     }
 
     private void pressed(JMenuItem item){
@@ -63,11 +60,14 @@ public class Gui implements ActionListener {
     private void setUpPanels(){
         verzoek = new Verzoek();
         authorisatie = new Authorisatie();
+        instellingen = new Instellingen();
         cardLayout = new CardLayout();
+
         mainPanel = new JPanel(cardLayout);
         KadasterGui.add(mainPanel);
         mainPanel.add(verzoek, "verzoek");
         mainPanel.add(authorisatie, "authorisatie");
+        mainPanel.add(instellingen, "instellingen");
         cardLayout.show(mainPanel, "verzoek");
     }
 
@@ -76,12 +76,20 @@ public class Gui implements ActionListener {
             case("Verzoek"):
                 pressed(verzoekItem);
                 unPressed(authorisatieItem);
+                unPressed(instellingenItem);
                 cardLayout.show(mainPanel, "verzoek");
                 break;
             case ("Authorisatie"):
                 pressed(authorisatieItem);
                 unPressed(verzoekItem);
+                unPressed(instellingenItem);
                 cardLayout.show(mainPanel, "authorisatie");
+                break;
+            case("Instellingen"):
+                pressed(instellingenItem);
+                unPressed(verzoekItem);
+                unPressed(authorisatieItem);
+                cardLayout.show(mainPanel, "instellingen");
                 break;
         }
     }
