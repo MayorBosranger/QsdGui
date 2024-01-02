@@ -2,21 +2,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Console;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Verzoek implements GuiPanel{
+public class Verzoek extends JPanel{
     public JPanel verzoekPanel;
     private JLabel TitelLabel;
     private JTextField queryField;
     private JList history;
     private JButton SendButton, ResultaatButton, OorsprongButton;
-    private JPanel ResponsePanel, HistoryPanel, DisplayPanel, DisplayInnerPanel;
+    private JPanel ResponsePanel, HistoryPanel, DisplayPanel;
     private CardLayout cardLayout;
     private JTable Resultaat, Oorsprong;
     private Object ReturnedResultaat;
     private List<String> queryHistory;
 
     public Verzoek(){
+        queryHistory = new ArrayList<String>();
+
+        cardLayout = new CardLayout();
         SendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -37,17 +42,11 @@ public class Verzoek implements GuiPanel{
                 SwitchResponsePanelTo("Oorsprong");
             }
         });
-        add(new JLabel("Verzoek"));
-        Resultaat = new JTable();
-        Oorsprong = new JTable();
-        cardLayout = new CardLayout();
-        DisplayInnerPanel = new JPanel(cardLayout);
-        DisplayPanel.add(DisplayInnerPanel);
 
-        DisplayInnerPanel.add(Resultaat, "Resultaat");
-        DisplayInnerPanel.add(Oorsprong, "Oorsprong");
-        cardLayout.show(DisplayInnerPanel, "Resultaat");
-        UpdateHistory();
+
+        CardLayout card = (CardLayout)DisplayPanel.getLayout();
+        card.show(DisplayPanel, "Resultaat");
+        //UpdateHistory();
     }
 
     public void UpdateHistory(){
@@ -59,29 +58,20 @@ public class Verzoek implements GuiPanel{
         history.setModel(listModel);
     }
 
-    @Override
-    public JPanel getPanel() {
-        return verzoekPanel;
-
-    }
-
-    @Override
-    public GuiPanel getSoort() {
-        return this;
-    }
-
     public Object DoeApiRequest(String input){
         String s = input;
+        //TODO maken
         return s;
     }
 
-    public void SwitchResponsePanelTo(String panelNaam){
+    public void SwitchResponsePanelTo(String panelNaam) {
+        CardLayout card = (CardLayout)DisplayPanel.getLayout();
         switch (panelNaam) {
             case "Resultaat":
-                cardLayout.show(DisplayInnerPanel, "Resultaat");
+                card.show(DisplayPanel, "Resultaat");
                 break;
             case "Oorsprong":
-                cardLayout.show(DisplayInnerPanel, "Oorsprong");
+                card.show(DisplayPanel, "Oorsprong");
                 break;
         }
     }
