@@ -1,10 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
-public class Gui implements ActionListener {
-    private JFrame KadasterGui;
+public class Gui extends JFrame implements ActionListener{
     private CardLayout cardLayout;
     private Verzoek verzoek;
     private Authorisatie authorisatie;
@@ -15,36 +13,67 @@ public class Gui implements ActionListener {
     JMenuItem verzoekItem = new JMenuItem("Verzoek");
     JMenuItem authorisatieItem = new JMenuItem("Authorisatie");
     JMenuItem instellingenItem = new JMenuItem("Instellingen");
-
+    JMenuItem closeItem = new JMenuItem("x");
+    JMenuItem minimizeItem = new JMenuItem("-");
+    private int mouseX, mouseY;
     public Gui(){
-        KadasterGui = new JFrame("KadasterGui");
-        KadasterGui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        KadasterGui.setPreferredSize(new Dimension(1000,600));
+        setUndecorated(true);
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                mouseX = e.getX();
+                mouseY = e.getY();
+            }
+        });
+
+        addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                int deltaX = e.getX() - mouseX;
+                int deltaY = e.getY() - mouseY;
+
+                setLocation(getLocation().x + deltaX, getLocation().y + deltaY);
+            }
+        });
+
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                getContentPane().setSize(getWidth(), getHeight());
+            }
+        });
+        setPreferredSize(new Dimension(1000,600));
 
         MakeMenuBar();
-        KadasterGui.setJMenuBar(Menubar);
+        setJMenuBar(Menubar);
 
         setUpPanels();
-        KadasterGui.pack();
-        KadasterGui.setVisible(true);
-    }
+        pack();
+        setVisible(true);
 
+    }
     private void MakeMenuBar(){
         Menubar = new JMenuBar();
         menubarLayout();
         verzoekItem.addActionListener(this);
         authorisatieItem.addActionListener(this);
         instellingenItem.addActionListener(this);
+        closeItem.addActionListener(this);
+        minimizeItem.addActionListener(this);
         Menubar.add(verzoekItem);
         Menubar.add(authorisatieItem);
         Menubar.add(instellingenItem);
+        Menubar.add(Box.createHorizontalGlue());
+        Menubar.add(minimizeItem);
+        Menubar.add(closeItem);
     }
 
     private void menubarLayout(){
-        verzoekItem.setMaximumSize(new Dimension(150, 1000));
-        authorisatieItem.setMaximumSize(new Dimension(150, 1000));
-        instellingenItem.setMaximumSize(new Dimension(150, 1000));
-        Menubar.setOpaque(true);
+        verzoekItem.setMaximumSize(new Dimension(150, 100));
+        authorisatieItem.setMaximumSize(new Dimension(150, 100));
+        instellingenItem.setMaximumSize(new Dimension(150, 100));
+        closeItem.setMaximumSize(new Dimension(10, 100));
+        minimizeItem.setMaximumSize(new Dimension(10, 100));
     }
 
     private void pressed(JMenuItem item){
@@ -64,11 +93,12 @@ public class Gui implements ActionListener {
         cardLayout = new CardLayout();
 
         mainPanel = new JPanel(cardLayout);
-        KadasterGui.add(mainPanel);
+        add(mainPanel);
         mainPanel.add(verzoek, "verzoek");
         mainPanel.add(authorisatie, "authorisatie");
         mainPanel.add(instellingen, "instellingen");
         cardLayout.show(mainPanel, "verzoek");
+        pressed(verzoekItem);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -90,6 +120,12 @@ public class Gui implements ActionListener {
                 unPressed(verzoekItem);
                 unPressed(authorisatieItem);
                 cardLayout.show(mainPanel, "instellingen");
+                break;
+            case("x"):
+                    dispose();
+                break;
+            case("-"):
+                setState(Frame.ICONIFIED);;
                 break;
         }
     }
