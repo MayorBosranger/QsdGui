@@ -18,7 +18,19 @@ public class Gui extends JFrame implements ActionListener{
     private int mouseX, mouseY;
     public Gui(){
         setUndecorated(true);
+        draggable();
+        setPreferredSize(new Dimension(1000,600));
 
+        MakeMenuBar();
+        setJMenuBar(Menubar);
+
+        setUpPanels();
+        pack();
+        setVisible(true);
+
+    }
+
+    private void draggable(){
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -42,15 +54,6 @@ public class Gui extends JFrame implements ActionListener{
                 getContentPane().setSize(getWidth(), getHeight());
             }
         });
-        setPreferredSize(new Dimension(1000,600));
-
-        MakeMenuBar();
-        setJMenuBar(Menubar);
-
-        setUpPanels();
-        pack();
-        setVisible(true);
-
     }
     private void MakeMenuBar(){
         Menubar = new JMenuBar();
@@ -102,6 +105,7 @@ public class Gui extends JFrame implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent e) {
+        authorisatie.SaveKey();
         switch (e.getActionCommand()){
             case("Verzoek"):
                 pressed(verzoekItem);
