@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Console;
+import java.awt.event.ComponentAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +47,8 @@ public class Verzoek extends JPanel{
         CardLayout card = (CardLayout)DisplayPanel.getLayout();
         card.show(DisplayPanel, "Resultaat");
         //UpdateHistory();
+        history.addComponentListener(new ComponentAdapter() {
+        });
     }
 
     public void UpdateHistory(){

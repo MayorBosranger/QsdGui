@@ -65,7 +65,7 @@ public class Gui implements ActionListener {
 
         mainPanel = new JPanel(cardLayout);
         KadasterGui.add(mainPanel);
-        mainPanel.add(verzoek, "verzoek");
+        mainPanel.add(verzoek.verzoekPanel, "verzoek");
         mainPanel.add(authorisatie, "authorisatie");
         mainPanel.add(instellingen, "instellingen");
         cardLayout.show(mainPanel, "verzoek");
