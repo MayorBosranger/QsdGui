@@ -1,25 +1,19 @@
 import jdk.jshell.Snippet;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class Authorisatie implements GuiPanel{
-    JPanel authorisatiePanel;
+public class Authorisatie extends JPanel{
+    JTextField text;
     public Authorisatie(){
-        authorisatiePanel = new JPanel();
-
-        JLabel label = new JLabel("Authorisatie");
-
-        authorisatiePanel.add(label);
+        add(new JLabel("Key:"));
+        text = new JTextField();
+        text.setPreferredSize(new Dimension(400,20));
+        add(text);
     }
 
-    @Override
-    public JPanel getPanel() {
-        return authorisatiePanel;
-    }
-
-    @Override
-    public GuiPanel getSoort() {
-        return this;
+    public String GetKey(){
+        return text.getText();
     }
 
 }

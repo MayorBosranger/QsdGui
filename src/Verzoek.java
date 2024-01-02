@@ -37,6 +37,7 @@ public class Verzoek implements GuiPanel{
                 SwitchResponsePanelTo("Oorsprong");
             }
         });
+        add(new JLabel("Verzoek"));
         Resultaat = new JTable();
         Oorsprong = new JTable();
         cardLayout = new CardLayout();
