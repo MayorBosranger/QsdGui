@@ -1,18 +1,18 @@
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.util.ArrayList;
+import java.awt.event.*;
+import java.util.*;
 import java.util.List;
 
 public class Verzoek extends JPanel{
     public JPanel verzoekPanel;
     private JLabel TitelLabel;
-    private JTextField queryField;
-    private JList history;
-    private JButton SendButton, ResultaatButton, OorsprongButton;
-    private JPanel ResponsePanel, HistoryPanel, DisplayPanel;
+    private JTextField QueryField;
+    private JList History;
+    private JButton SendButton, ResultaatButton, OorsprongButton, ClearButton, SelectButton;
+    private JPanel ResponsePanel, DisplayPanel;
     private CardLayout cardLayout;
     private JTable Resultaat, Oorsprong;
     private Object ReturnedResultaat;
@@ -20,14 +20,14 @@ public class Verzoek extends JPanel{
 
     public Verzoek(){
         queryHistory = new ArrayList<String>();
-
         cardLayout = new CardLayout();
         SendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String query = queryField.getText();
-                queryHistory.add(query);
+                String query = QueryField.getText();
+                addToHistory(query);
                 ReturnedResultaat = DoeApiRequest(query);
+                UpdateHistory();
             }
         });
         ResultaatButton.addActionListener(new ActionListener() {
@@ -42,13 +42,28 @@ public class Verzoek extends JPanel{
                 SwitchResponsePanelTo("Oorsprong");
             }
         });
-
+        SelectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //niks geselecteerd is index -1
+                int index = History.getSelectedIndex();
+                String s = (String) History.getSelectedValue();
+                System.out.println("Index: " + index + " - Value: "+ s);
+                QueryField.setText(s);
+            }
+        });
+        ClearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                queryHistory.clear();
+                UpdateHistory();
+            }
+        });
 
         CardLayout card = (CardLayout)DisplayPanel.getLayout();
         card.show(DisplayPanel, "Resultaat");
-        //UpdateHistory();
-        history.addComponentListener(new ComponentAdapter() {
-        });
+        UpdateHistory();
+
     }
 
     public void UpdateHistory(){
@@ -57,13 +72,20 @@ public class Verzoek extends JPanel{
             listModel.addElement(s);
         }
         if(listModel.isEmpty()) listModel.addElement("geschiedenis is leeg");
-        history.setModel(listModel);
+        History.setModel(listModel);
     }
 
     public Object DoeApiRequest(String input){
-        String s = input;
+        ReturnedResultaat = input;
         //TODO maken
-        return s;
+        return ReturnedResultaat;
+    }
+
+    public void addToHistory(String s){
+        if(queryHistory.isEmpty()) queryHistory.add(s);
+        String previous = queryHistory.getLast();
+        if(Objects.equals(previous, s)) return;
+        queryHistory.add(s);
     }
 
     public void SwitchResponsePanelTo(String panelNaam) {
