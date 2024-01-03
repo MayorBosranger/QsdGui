@@ -9,7 +9,7 @@ public class Authorisatie extends JPanel{
     Preferences prefs = Preferences.userNodeForPackage(Authorisatie.class);
     public Authorisatie(){
         add(new JLabel("Key:"));
-        text = new JTextField(prefs.get("Key", "Default"));
+        text = new JTextField(prefs.get("Key", "Leeg"));
         text.setPreferredSize(new Dimension(400,20));
         add(text);
     }
@@ -19,6 +19,7 @@ public class Authorisatie extends JPanel{
     }
 
     public String GetKey(){
+        SaveKey();
         return prefs.get("Key", "Default");
     }
 
