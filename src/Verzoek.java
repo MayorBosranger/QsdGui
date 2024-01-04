@@ -62,8 +62,8 @@ public class Verzoek extends JPanel{
 
         CardLayout card = (CardLayout)DisplayPanel.getLayout();
         card.show(DisplayPanel, "Resultaat");
-        UpdateHistory();
 
+        UpdateHistory();
     }
 
     public void UpdateHistory(){
@@ -84,6 +84,7 @@ public class Verzoek extends JPanel{
     public void addToHistory(String s){
         if(queryHistory.isEmpty()) queryHistory.add(s);
         String previous = queryHistory.getLast();
+        
         if(Objects.equals(previous, s)) return;
         queryHistory.add(s);
     }

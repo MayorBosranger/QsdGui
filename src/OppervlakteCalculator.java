@@ -9,6 +9,7 @@ public class OppervlakteCalculator {
             int nextI = (i+1)%aantalCoordinaten;
             oppervlakte += xCoordinaten[i]*yCoordinaten[nextI] - yCoordinaten[i]*xCoordinaten[nextI];
         }
+
         if(oppervlakte < 0) oppervlakte = -oppervlakte;
         return oppervlakte/2;
     }
