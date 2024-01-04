@@ -83,8 +83,8 @@ public class Verzoek extends JPanel{
 
     public void addToHistory(String s){
         if(queryHistory.isEmpty()) queryHistory.add(s);
-        String previous = queryHistory.getLast();
-        
+        String previous = queryHistory.get(queryHistory.size()-1);
+
         if(Objects.equals(previous, s)) return;
         queryHistory.add(s);
     }
