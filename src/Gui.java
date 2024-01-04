@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Gui extends JFrame implements ActionListener{
+public class Gui extends JFrame implements ActionListener {
     private CardLayout cardLayout;
     private Verzoek verzoek;
     private Authorisatie authorisatie;
@@ -15,7 +15,7 @@ public class Gui extends JFrame implements ActionListener{
     JMenuItem instellingenItem = new JMenuItem("Instellingen");
     JMenuItem closeItem = new JMenuItem("x");
     JMenuItem minimizeItem = new JMenuItem("-");
-    private int mouseX, mouseY;
+
     public Gui(){
         setUndecorated(true);
         Framecontroller.draggable(this);
@@ -28,7 +28,6 @@ public class Gui extends JFrame implements ActionListener{
         pack();
         setVisible(true);
     }
-
 
     private void MakeMenuBar(){
         Menubar = new JMenuBar();
