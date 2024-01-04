@@ -1,6 +1,4 @@
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -30,12 +28,37 @@ public class Verzoek extends JPanel implements ActionListener {
         add(result);
         queryHistory = new ArrayList<String>();
         cardLayout = new CardLayout();
+        initiateButtons();
+
+        CardLayout card = (CardLayout)DisplayPanel.getLayout();
+        card.show(DisplayPanel, "Resultaat");
+
+        UpdateHistory();
+    }
+
+    public void UpdateHistory(){
+        DefaultListModel<String> listModel = new DefaultListModel<String>();
+        for (String s : queryHistory){
+            listModel.addElement(s);
+        }
+        if(listModel.isEmpty()) listModel.addElement("geschiedenis is leeg");
+        History.setModel(listModel);
+    }
+
+    public void addToHistory(String s){
+        if(queryHistory.isEmpty()) queryHistory.add(s);
+        String previous = queryHistory.get(queryHistory.size()-1);
+
+        if(Objects.equals(previous, s)) return;
+        queryHistory.add(s);
+    }
+
+    private void initiateButtons(){
         SendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String query = QueryField.getText();
                 addToHistory(query);
-                ReturnedResultaat = DoeApiRequest(query);
                 UpdateHistory();
             }
         });
@@ -68,34 +91,6 @@ public class Verzoek extends JPanel implements ActionListener {
                 UpdateHistory();
             }
         });
-
-        CardLayout card = (CardLayout)DisplayPanel.getLayout();
-        card.show(DisplayPanel, "Resultaat");
-
-        UpdateHistory();
-    }
-
-    public void UpdateHistory(){
-        DefaultListModel<String> listModel = new DefaultListModel<String>();
-        for (String s : queryHistory){
-            listModel.addElement(s);
-        }
-        if(listModel.isEmpty()) listModel.addElement("geschiedenis is leeg");
-        History.setModel(listModel);
-    }
-
-    public Object DoeApiRequest(String input){
-        ReturnedResultaat = input;
-        //TODO maken
-        return ReturnedResultaat;
-    }
-
-    public void addToHistory(String s){
-        if(queryHistory.isEmpty()) queryHistory.add(s);
-        String previous = queryHistory.getLast();
-
-        if(Objects.equals(previous, s)) return;
-        queryHistory.add(s);
     }
 
     public void SwitchResponsePanelTo(String panelNaam) {
@@ -112,6 +107,5 @@ public class Verzoek extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         result.setText(apiController.runJsonQuery(queryTextArea.getText()));
-
     }
 }
