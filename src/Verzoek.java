@@ -2,12 +2,11 @@ import javax.management.Query;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class Verzoek extends JPanel implements ActionListener {
 
@@ -24,42 +23,59 @@ public class Verzoek extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        runQuery();
+        runJsonQuery();
     }
 
-    private void runQuery(){
-        URL url;
+    private void runJsonQuery(){
         try {
-            url = new URL("http://localhost:8081/graphql");
+            // Replace the URL with the actual GraphQL endpoint
+            URL apiUrl = new URL("http://localhost:8081/graphql");
 
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            // Replace this with your custom GraphQL query
+            String jsonRequest = "{\"query\": \"" + escapeDoubleQuotes(queryTextArea.getText()) + "\",\"operationName\": \"MyQuery\"}";
 
-            connection.setRequestMethod("GET");
 
-            // Get the response code
-            int responseCode = connection.getResponseCode();
+            // Open a connection to the URL
+            HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+
+            // Set the request method to POST
+            connection.setRequestMethod("POST");
+
+            // Set request headers
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
+
+            // Enable input and output streams
+            connection.setDoOutput(true);
+
+
+            try(OutputStream os = connection.getOutputStream()) {
+                byte[] input = jsonRequest.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
 
             // Read the response from the API
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String line = queryTextArea.getText();
-                StringBuilder response = new StringBuilder();
-
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
+                try(BufferedReader br = new BufferedReader(
+                        new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+                    StringBuilder response = new StringBuilder();
+                    String responseLine = null;
+                    while ((responseLine = br.readLine()) != null) {
+                        response.append(responseLine.trim());
+                    }
+                    result.setText(response.toString());
                 }
-                reader.close();
-
-                // Print the API response
-                System.out.println("API Response:\n" + response.toString());
-            } else {
-                System.out.println("Error: Unable to fetch data from the API.");
-            }
 
             // Close the connection
             connection.disconnect();
+
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+
+    }
+
+    private String escapeDoubleQuotes(String input) {
+        return input.replace("\"", "\\\"").replace("\n", "\\n");
     }
 }
