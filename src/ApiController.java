@@ -16,7 +16,6 @@ public class ApiController {
             // Replace this with your custom GraphQL query
             String jsonRequest = "{\"query\": \"" + escapeDoubleQuotes(query) + "\",\"operationName\": \"MyQuery\"}";
 
-
             // Open a connection to the URL
             HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
 
@@ -30,12 +29,10 @@ public class ApiController {
             // Enable input and output streams
             connection.setDoOutput(true);
 
-
             try(OutputStream os = connection.getOutputStream()) {
                 byte[] input = jsonRequest.getBytes("utf-8");
                 os.write(input, 0, input.length);
             }
-
 
             // Read the response from the API
             try(BufferedReader br = new BufferedReader(
