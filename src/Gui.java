@@ -2,75 +2,97 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
-import java.util.List;
 
 public class Gui implements ActionListener {
     private JFrame KadasterGui;
+    private CardLayout cardLayout;
     private Verzoek verzoek;
     private Authorisatie authorisatie;
-    private JPanel activePanel;
+    private Instellingen instellingen;
+    private JPanel mainPanel;
 
-    JMenuBar Menubar = new JMenuBar();
-    JMenuItem Verzoek = new JMenuItem("Verzoek");
-    JMenuItem Authorisatie = new JMenuItem("Authorisatie");
+    JMenuBar Menubar;
+    JMenuItem verzoekItem = new JMenuItem("Verzoek");
+    JMenuItem authorisatieItem = new JMenuItem("Authorisatie");
+    JMenuItem instellingenItem = new JMenuItem("Instellingen");
 
     public Gui(){
         KadasterGui = new JFrame("KadasterGui");
         KadasterGui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         KadasterGui.setPreferredSize(new Dimension(1000,600));
 
-        KadasterGui.setJMenuBar(MakeMenuBar());
+        MakeMenuBar();
+        KadasterGui.setJMenuBar(Menubar);
 
-        activePanel = getAuthorisatiePanel();
-        KadasterGui.add(activePanel);
+        setUpPanels();
         KadasterGui.pack();
-        KadasterGui.setLocationRelativeTo(null);
         KadasterGui.setVisible(true);
     }
 
-    private JMenuBar MakeMenuBar(){
-        Verzoek.addActionListener(this);
-        Authorisatie.addActionListener(this);
-        Menubar.add(Verzoek);
-        Menubar.add(Authorisatie);
-        return Menubar;
+    private void MakeMenuBar(){
+        Menubar = new JMenuBar();
+        menubarLayout();
+        verzoekItem.addActionListener(this);
+        authorisatieItem.addActionListener(this);
+        instellingenItem.addActionListener(this);
+        Menubar.add(verzoekItem);
+        Menubar.add(authorisatieItem);
+        Menubar.add(instellingenItem);
     }
 
-    private JPanel getVerzoekPanel(){
-        if (verzoek == null){
-            verzoek = new Verzoek();
-            return verzoek.getPanel();
-        }else return verzoek.getPanel();
+    private void menubarLayout(){
+        verzoekItem.setMaximumSize(new Dimension(150, 1000));
+        authorisatieItem.setMaximumSize(new Dimension(150, 1000));
+        instellingenItem.setMaximumSize(new Dimension(150, 1000));
+        Menubar.setOpaque(true);
     }
 
-    private JPanel getAuthorisatiePanel(){
-        if (authorisatie == null){
-            authorisatie = new Authorisatie();
-            return authorisatie.getPanel();
-        }else return authorisatie.getPanel();
+    private void pressed(JMenuItem item){
+        item.setForeground(new Color(200,200,200));
+        item.setBackground(new Color(100,100,100));
+    }
+
+    private void unPressed(JMenuItem item){
+        item.setForeground(Color.black);
+        item.setBackground(Color.white);
+    }
+
+    private void setUpPanels(){
+        verzoek = new Verzoek();
+        authorisatie = new Authorisatie();
+        instellingen = new Instellingen();
+        cardLayout = new CardLayout();
+
+        mainPanel = new JPanel(cardLayout);
+        KadasterGui.add(mainPanel);
+        mainPanel.add(verzoek.verzoekPanel, "verzoek");
+        mainPanel.add(authorisatie, "authorisatie");
+        mainPanel.add(instellingen, "instellingen");
+        cardLayout.show(mainPanel, "verzoek");
     }
 
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()){
             case("Verzoek"):
-                Verzoek.setEnabled(false);
-                Authorisatie.setEnabled(true);
-                activePanel = getVerzoekPanel();
-                activateActivePanel();
+                pressed(verzoekItem);
+                unPressed(authorisatieItem);
+                unPressed(instellingenItem);
+                cardLayout.show(mainPanel, "verzoek");
                 break;
             case ("Authorisatie"):
-                Authorisatie.setEnabled(false);
-                Verzoek.setEnabled(true);
-                activePanel = getAuthorisatiePanel();
-                activateActivePanel();
+                pressed(authorisatieItem);
+                unPressed(verzoekItem);
+                unPressed(instellingenItem);
+                cardLayout.show(mainPanel, "authorisatie");
+                break;
+            case("Instellingen"):
+                pressed(instellingenItem);
+                unPressed(verzoekItem);
+                unPressed(authorisatieItem);
+                cardLayout.show(mainPanel, "instellingen");
                 break;
         }
     }
 
-    private void activateActivePanel(){
-        KadasterGui.getContentPane().removeAll();
-        KadasterGui.add(activePanel);
-    }
 
 }
