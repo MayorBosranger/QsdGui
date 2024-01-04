@@ -18,7 +18,7 @@ public class Gui extends JFrame implements ActionListener{
     private int mouseX, mouseY;
     public Gui(){
         setUndecorated(true);
-        draggable();
+        Framecontroller.draggable(this);
         setPreferredSize(new Dimension(1000,600));
 
         MakeMenuBar();
@@ -27,34 +27,9 @@ public class Gui extends JFrame implements ActionListener{
         setUpPanels();
         pack();
         setVisible(true);
-
     }
 
-    private void draggable(){
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                mouseX = e.getX();
-                mouseY = e.getY();
-            }
-        });
 
-        addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                int deltaX = e.getX() - mouseX;
-                int deltaY = e.getY() - mouseY;
-
-                setLocation(getLocation().x + deltaX, getLocation().y + deltaY);
-            }
-        });
-
-        addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-                getContentPane().setSize(getWidth(), getHeight());
-            }
-        });
-    }
     private void MakeMenuBar(){
         Menubar = new JMenuBar();
         menubarLayout();
