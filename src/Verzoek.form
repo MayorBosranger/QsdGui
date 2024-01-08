@@ -99,10 +99,10 @@
                           <focusable value="true"/>
                           <maximumSize width="10" height="104"/>
                           <model>
-                            <item value="biem"/>
-                            <item value="kaas"/>
-                            <item value="gerard"/>
-                            <item value="whut"/>
+                            <item value="Query 1"/>
+                            <item value="Query 2"/>
+                            <item value="Query 3"/>
+                            <item value="Query 4"/>
                           </model>
                           <preferredSize width="42" height="140"/>
                           <selectionMode value="0"/>
