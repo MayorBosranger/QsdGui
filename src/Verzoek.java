@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Verzoek extends JPanel{
     public JPanel verzoekPanel;
-    private JLabel TitelLabel;
     private JTextArea QueryField;
     private JList History;
     private JButton SendButton, ClearButton, SelectButton;
