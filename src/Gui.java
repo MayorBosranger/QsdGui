@@ -72,13 +72,14 @@ public class Gui extends JFrame implements ActionListener {
         mainPanel = new JPanel(cardLayout);
         add(mainPanel);
         mainPanel.add(verzoek.verzoekPanel, "verzoek");
-        mainPanel.add(authorisatie, "authorisatie");
+        mainPanel.add(authorisatie.AuthorisatiePanel, "authorisatie");
         mainPanel.add(instellingen, "instellingen");
         cardLayout.show(mainPanel, "verzoek");
         pressed(verzoekItem);
     }
 
     public void actionPerformed(ActionEvent e) {
+        authorisatie.SaveKey();
         switch (e.getActionCommand()){
             case("Verzoek"):
                 pressed(verzoekItem);
