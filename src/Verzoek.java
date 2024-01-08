@@ -56,6 +56,10 @@ private ApiController apiController = new ApiController();
             @Override
             public void actionPerformed(ActionEvent e) {
                 //niks geselecteerd is index -1
+                if(queryHistory.isEmpty()){
+                    QueryField.setText("");
+                    return;
+                }
                 int index = History.getSelectedIndex();
                 String s = (String) History.getSelectedValue();
                 System.out.println("Index: " + index + " - Value: "+ s);
