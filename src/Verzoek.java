@@ -1,8 +1,15 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Verzoek extends JPanel{
     public JPanel verzoekPanel;
@@ -11,8 +18,7 @@ public class Verzoek extends JPanel{
     private JButton SendButton, ClearButton, SelectButton;
     private JPanel ResponsePanel, DisplayPanel;
     private CardLayout cardLayout;
-    private JTextArea Resultaat;
-    private Object ReturnedResultaat;
+    private JTextArea ResultaatArea;
     private List<String> queryHistory;
 private ApiController apiController = new ApiController();
     public Verzoek(){
@@ -41,7 +47,8 @@ private ApiController apiController = new ApiController();
             public void actionPerformed(ActionEvent e) {
                 String query = QueryField.getText();
                 addToHistory(query);
-                Resultaat.setText(apiController.runJsonQuery(query));
+                String resultaat = queryResultFormat(apiController.runJsonQuery(query));
+                ResultaatArea.setText(resultaat);
                 UpdateHistory();
             }
         });
@@ -70,5 +77,12 @@ private ApiController apiController = new ApiController();
 
         if(Objects.equals(previous, s)) return;
         queryHistory.add(s);
+    }
+
+    private String queryResultFormat(String format){
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonElement je = JsonParser.parseString(format);
+        String returnString = gson.toJson(je);
+        return returnString;
     }
 }
