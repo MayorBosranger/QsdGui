@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Verzoek extends JPanel{
+public class Verzoek{
     public JPanel verzoekPanel;
     private JTextArea QueryField;
     private JList History;
