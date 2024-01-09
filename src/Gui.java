@@ -7,12 +7,14 @@ public class Gui extends JFrame implements ActionListener {
     private Verzoek verzoek;
     private Authorisatie authorisatie;
     private Instellingen instellingen;
+    private Kaart kaart;
     private JPanel mainPanel;
 
     JMenuBar Menubar;
     JMenuItem verzoekItem = new JMenuItem("Verzoek");
     JMenuItem authorisatieItem = new JMenuItem("Authorisatie");
     JMenuItem instellingenItem = new JMenuItem("Instellingen");
+    JMenuItem kaartItem = new JMenuItem("Kaart");
 
     public Gui(){
         setPreferredSize(new Dimension(1000,600));
@@ -32,9 +34,11 @@ public class Gui extends JFrame implements ActionListener {
         verzoekItem.addActionListener(this);
         authorisatieItem.addActionListener(this);
         instellingenItem.addActionListener(this);
+        kaartItem.addActionListener(this);
         Menubar.add(verzoekItem);
         Menubar.add(authorisatieItem);
         Menubar.add(instellingenItem);
+        Menubar.add(kaartItem);
         Menubar.add(Box.createHorizontalGlue());
     }
 
@@ -53,6 +57,7 @@ public class Gui extends JFrame implements ActionListener {
         verzoekItem.setMaximumSize(new Dimension(150, 100));
         authorisatieItem.setMaximumSize(new Dimension(150, 100));
         instellingenItem.setMaximumSize(new Dimension(150, 100));
+        kaartItem.setMaximumSize(new Dimension(150, 100));
     }
 
     private void pressed(JMenuItem item){
@@ -69,6 +74,7 @@ public class Gui extends JFrame implements ActionListener {
         verzoek = new Verzoek();
         authorisatie = new Authorisatie();
         instellingen = new Instellingen();
+        kaart = new Kaart();
         cardLayout = new CardLayout();
 
         mainPanel = new JPanel(cardLayout);
@@ -76,6 +82,7 @@ public class Gui extends JFrame implements ActionListener {
         mainPanel.add(verzoek.verzoekPanel, "verzoek");
         mainPanel.add(authorisatie.AuthorisatiePanel, "authorisatie");
         mainPanel.add(instellingen, "instellingen");
+        mainPanel.add(kaart, "kaart");
         cardLayout.show(mainPanel, "verzoek");
         pressed(verzoekItem);
     }
@@ -99,6 +106,12 @@ public class Gui extends JFrame implements ActionListener {
                 unPressed(verzoekItem);
                 unPressed(authorisatieItem);
                 cardLayout.show(mainPanel, "instellingen");
+                break;
+            case("Kaart"):
+                pressed(kaartItem);
+                unPressed(verzoekItem);
+                unPressed(authorisatieItem);
+                cardLayout.show(mainPanel, "kaart");
                 break;
         }
     }
