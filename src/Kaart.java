@@ -11,11 +11,16 @@ import org.jxmapviewer.viewer.TileFactoryInfo;
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.util.Arrays;
+import java.util.List;
 
 public class Kaart extends JPanel {
+    private JXMapViewer mapViewer;
+
     public Kaart(){
-        //add(new JLabel("Kaart"));
-        JXMapViewer mapViewer = new JXMapViewer();
+        mapViewer = new JXMapViewer();
         TileFactoryInfo info = new OSMTileFactoryInfo();
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
         mapViewer.setTileFactory(tileFactory);
@@ -24,7 +29,7 @@ public class Kaart extends JPanel {
         tileFactory.setThreadPoolSize(8);
 
         // Set the focus
-        GeoPosition frankfurt = new GeoPosition(52.37, 5.21);
+        GeoPosition frankfurt = new GeoPosition(52.5, 5.0);
 
         mapViewer.setZoom(10);
         mapViewer.setAddressLocation(frankfurt);
@@ -36,12 +41,26 @@ public class Kaart extends JPanel {
         mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCenter(mapViewer));
         mapViewer.addKeyListener(new PanKeyListener(mapViewer));
 
-        setLayout(null);
+        List<GeoPosition> areaCoordinates = Arrays.asList(
+                new GeoPosition(54, 5.0),
+                new GeoPosition(53.6, 5.4),
+                new GeoPosition(52.1, 5.4),
+                new GeoPosition(52.3, 5.0),
+                new GeoPosition(55.2,6.5),
+                new GeoPosition(55.3,5.6)
+        );
 
-        mapViewer.setSize(new Dimension(1000, 600));
+        OppervlaktePainter areaPainter = new OppervlaktePainter(areaCoordinates);
+        mapViewer.setOverlayPainter(areaPainter);
 
-        setBounds(0,0,1000,600);
-        add(mapViewer);
+        this.setLayout(new BorderLayout());
+        this.add(mapViewer, BorderLayout.CENTER);
 
+        // Resize listener
+        this.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent componentEvent) {
+                mapViewer.setSize(Kaart.this.getSize());
+            }
+        });
     }
 }
