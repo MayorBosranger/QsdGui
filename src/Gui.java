@@ -13,12 +13,8 @@ public class Gui extends JFrame implements ActionListener {
     JMenuItem verzoekItem = new JMenuItem("Verzoek");
     JMenuItem authorisatieItem = new JMenuItem("Authorisatie");
     JMenuItem instellingenItem = new JMenuItem("Instellingen");
-    JMenuItem closeItem = new JMenuItem("x");
-    JMenuItem minimizeItem = new JMenuItem("-");
 
     public Gui(){
-        setUndecorated(true);
-        Framecontroller.draggable(this);
         setPreferredSize(new Dimension(1000,600));
 
         MakeMenuBar();
@@ -26,6 +22,7 @@ public class Gui extends JFrame implements ActionListener {
 
         setUpPanels();
         pack();
+        setDefaultCloseOperation(close());
         setVisible(true);
     }
 
@@ -35,22 +32,27 @@ public class Gui extends JFrame implements ActionListener {
         verzoekItem.addActionListener(this);
         authorisatieItem.addActionListener(this);
         instellingenItem.addActionListener(this);
-        closeItem.addActionListener(this);
-        minimizeItem.addActionListener(this);
         Menubar.add(verzoekItem);
         Menubar.add(authorisatieItem);
         Menubar.add(instellingenItem);
         Menubar.add(Box.createHorizontalGlue());
-        Menubar.add(minimizeItem);
-        Menubar.add(closeItem);
+    }
+
+    private int close(){
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                authorisatie.SaveKey();
+                super.windowClosing(e);
+            }
+        });
+        return JFrame.EXIT_ON_CLOSE;
     }
 
     private void menubarLayout(){
         verzoekItem.setMaximumSize(new Dimension(150, 100));
         authorisatieItem.setMaximumSize(new Dimension(150, 100));
         instellingenItem.setMaximumSize(new Dimension(150, 100));
-        closeItem.setMaximumSize(new Dimension(10, 100));
-        minimizeItem.setMaximumSize(new Dimension(10, 100));
     }
 
     private void pressed(JMenuItem item){
@@ -72,7 +74,7 @@ public class Gui extends JFrame implements ActionListener {
         mainPanel = new JPanel(cardLayout);
         add(mainPanel);
         mainPanel.add(verzoek.verzoekPanel, "verzoek");
-        mainPanel.add(authorisatie, "authorisatie");
+        mainPanel.add(authorisatie.AuthorisatiePanel, "authorisatie");
         mainPanel.add(instellingen, "instellingen");
         cardLayout.show(mainPanel, "verzoek");
         pressed(verzoekItem);
@@ -97,13 +99,6 @@ public class Gui extends JFrame implements ActionListener {
                 unPressed(verzoekItem);
                 unPressed(authorisatieItem);
                 cardLayout.show(mainPanel, "instellingen");
-                break;
-            case("x"):
-                authorisatie.SaveKey();
-                dispose();
-                break;
-            case("-"):
-                setState(Frame.ICONIFIED);;
                 break;
         }
     }

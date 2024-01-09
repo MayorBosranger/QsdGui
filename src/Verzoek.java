@@ -1,51 +1,65 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class Verzoek extends JPanel{
+public class Verzoek{
     public JPanel verzoekPanel;
-    private JLabel TitelLabel;
-    private JTextField QueryField;
+    private JTextArea QueryField, ResultaatArea;
     private JList History;
-    private JButton SendButton, ResultaatButton, OorsprongButton, ClearButton, SelectButton;
+    private JButton SendButton, ClearButton, SelectButton;
     private JPanel ResponsePanel, DisplayPanel;
     private CardLayout cardLayout;
-    private JTable Resultaat, Oorsprong;
-    private Object ReturnedResultaat;
     private List<String> queryHistory;
+    private ApiController apiController = new ApiController();
 
     public Verzoek(){
         queryHistory = new ArrayList<String>();
         cardLayout = new CardLayout();
+        initializeButtons();
+
+        CardLayout card = (CardLayout)DisplayPanel.getLayout();
+        card.show(DisplayPanel, "Resultaat");
+
+        UpdateHistory();
+    }
+
+    public void UpdateHistory(){
+        DefaultListModel<String> listModel = new DefaultListModel<String>();
+        for (String s : queryHistory){
+            String query = s;
+            if(query.length() >= 20) query = query.substring(0, 20);
+            listModel.addElement(query);
+        }
+        if(listModel.isEmpty()) listModel.addElement("geschiedenis is leeg");
+        History.setModel(listModel);
+    }
+
+    private void initializeButtons(){
         SendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String query = QueryField.getText();
                 addToHistory(query);
-                ReturnedResultaat = DoeApiRequest(query);
                 UpdateHistory();
-            }
-        });
-        ResultaatButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwitchResponsePanelTo("Resultaat");
-            }
-        });
-        OorsprongButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwitchResponsePanelTo("Oorsprong");
+                String resultaat = queryResultFormat(apiController.runJsonQuery(query));
+                ResultaatArea.setText(resultaat);
             }
         });
         SelectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //niks geselecteerd is index -1
+                if(queryHistory.isEmpty()){
+                    QueryField.setText("");
+                    return;
+                }
                 int index = History.getSelectedIndex();
                 String s = (String) History.getSelectedValue();
                 System.out.println("Index: " + index + " - Value: "+ s);
@@ -59,26 +73,6 @@ public class Verzoek extends JPanel{
                 UpdateHistory();
             }
         });
-
-        CardLayout card = (CardLayout)DisplayPanel.getLayout();
-        card.show(DisplayPanel, "Resultaat");
-
-        UpdateHistory();
-    }
-
-    public void UpdateHistory(){
-        DefaultListModel<String> listModel = new DefaultListModel<String>();
-        for (String s : queryHistory){
-            listModel.addElement(s);
-        }
-        if(listModel.isEmpty()) listModel.addElement("geschiedenis is leeg");
-        History.setModel(listModel);
-    }
-
-    public Object DoeApiRequest(String input){
-        ReturnedResultaat = input;
-        //TODO maken
-        return ReturnedResultaat;
     }
 
     public void addToHistory(String s){
@@ -89,15 +83,10 @@ public class Verzoek extends JPanel{
         queryHistory.add(s);
     }
 
-    public void SwitchResponsePanelTo(String panelNaam) {
-        CardLayout card = (CardLayout)DisplayPanel.getLayout();
-        switch (panelNaam) {
-            case "Resultaat":
-                card.show(DisplayPanel, "Resultaat");
-                break;
-            case "Oorsprong":
-                card.show(DisplayPanel, "Oorsprong");
-                break;
-        }
+    private String queryResultFormat(String format){
+        if(format.isEmpty()) return "";
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonElement je = JsonParser.parseString(format);
+        return gson.toJson(je);
     }
 }

@@ -1,26 +1,34 @@
-import jdk.jshell.Snippet;
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.prefs.Preferences;
 
-public class Authorisatie extends JPanel{
-    JTextField text;
+public class Authorisatie{
     Preferences prefs = Preferences.userNodeForPackage(Authorisatie.class);
+    private JTextField keyTextField;
+    public JPanel AuthorisatiePanel;
+    private JButton startAPIButton;
+
     public Authorisatie(){
-        add(new JLabel("Key:"));
-        text = new JTextField(prefs.get("Key", "Leeg"));
-        text.setPreferredSize(new Dimension(400,20));
-        add(text);
+        keyTextField.setText(prefs.get("ApiKey", ""));
+        keyTextField.setPreferredSize(new Dimension(400,20));
+
+        startAPIButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GetKey();
+            }
+        });
     }
 
     public void SaveKey(){
-        prefs.put("Key", text.getText());
+        prefs.put("ApiKey", keyTextField.getText());
     }
 
     public String GetKey(){
         SaveKey();
-        return prefs.get("Key", "Default");
+        return prefs.get("ApiKey", "");
     }
 
 }
