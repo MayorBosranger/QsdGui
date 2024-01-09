@@ -70,6 +70,13 @@ public class Gui extends JFrame implements ActionListener {
         item.setBackground(Color.white);
     }
 
+    private void unPressAll(){
+        unPressed(verzoekItem);
+        unPressed(authorisatieItem);
+        unPressed(instellingenItem);
+        unPressed(kaartItem);
+    }
+
     private void setUpPanels(){
         verzoek = new Verzoek();
         authorisatie = new Authorisatie();
@@ -88,29 +95,22 @@ public class Gui extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
+        unPressAll();
         switch (e.getActionCommand()){
             case("Verzoek"):
                 pressed(verzoekItem);
-                unPressed(authorisatieItem);
-                unPressed(instellingenItem);
                 cardLayout.show(mainPanel, "verzoek");
                 break;
             case ("Authorisatie"):
                 pressed(authorisatieItem);
-                unPressed(verzoekItem);
-                unPressed(instellingenItem);
                 cardLayout.show(mainPanel, "authorisatie");
                 break;
             case("Instellingen"):
                 pressed(instellingenItem);
-                unPressed(verzoekItem);
-                unPressed(authorisatieItem);
                 cardLayout.show(mainPanel, "instellingen");
                 break;
             case("Kaart"):
                 pressed(kaartItem);
-                unPressed(verzoekItem);
-                unPressed(authorisatieItem);
                 cardLayout.show(mainPanel, "kaart");
                 break;
         }

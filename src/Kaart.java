@@ -23,8 +23,9 @@ public class Kaart extends JPanel {
 
         mapViewer.setZoom(7);
         mapViewer.setAddressLocation(frankfurt);
-        mapViewer.setSize(new Dimension(1500, 1000));
-
         add(mapViewer);
+
+        mapViewer.setSize(new Dimension(800, 600));
+
     }
 }
