@@ -1,10 +1,15 @@
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
+import org.jxmapviewer.input.CenterMapListener;
+import org.jxmapviewer.input.PanKeyListener;
+import org.jxmapviewer.input.PanMouseInputListener;
+import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 
 import javax.swing.*;
+import javax.swing.event.MouseInputListener;
 import java.awt.*;
 
 public class Kaart extends JPanel {
@@ -19,13 +24,24 @@ public class Kaart extends JPanel {
         tileFactory.setThreadPoolSize(8);
 
         // Set the focus
-        GeoPosition frankfurt = new GeoPosition(50.11, 8.68);
+        GeoPosition frankfurt = new GeoPosition(52.37, 5.21);
 
-        mapViewer.setZoom(7);
+        mapViewer.setZoom(10);
         mapViewer.setAddressLocation(frankfurt);
-        add(mapViewer);
 
-        mapViewer.setSize(new Dimension(800, 600));
+        MouseInputListener mia = new PanMouseInputListener(mapViewer);
+        mapViewer.addMouseListener(mia);
+        mapViewer.addMouseMotionListener(mia);
+        mapViewer.addMouseListener(new CenterMapListener(mapViewer));
+        mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCenter(mapViewer));
+        mapViewer.addKeyListener(new PanKeyListener(mapViewer));
+
+        setLayout(null);
+
+        mapViewer.setSize(new Dimension(1000, 600));
+
+        setBounds(0,0,1000,600);
+        add(mapViewer);
 
     }
 }
