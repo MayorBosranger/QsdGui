@@ -47,9 +47,9 @@ private ApiController apiController = new ApiController();
             public void actionPerformed(ActionEvent e) {
                 String query = QueryField.getText();
                 addToHistory(query);
+                UpdateHistory();
                 String resultaat = queryResultFormat(apiController.runJsonQuery(query));
                 ResultaatArea.setText(resultaat);
-                UpdateHistory();
             }
         });
         SelectButton.addActionListener(new ActionListener() {
