@@ -2,7 +2,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,14 +12,14 @@ import java.util.Objects;
 
 public class Verzoek{
     public JPanel verzoekPanel;
-    private JTextArea QueryField;
+    private JTextArea QueryField, ResultaatArea;
     private JList History;
     private JButton SendButton, ClearButton, SelectButton;
     private JPanel ResponsePanel, DisplayPanel;
     private CardLayout cardLayout;
-    private JTextArea ResultaatArea;
     private List<String> queryHistory;
-private ApiController apiController = new ApiController();
+    private ApiController apiController = new ApiController();
+
     public Verzoek(){
         queryHistory = new ArrayList<String>();
         cardLayout = new CardLayout();
@@ -35,7 +34,9 @@ private ApiController apiController = new ApiController();
     public void UpdateHistory(){
         DefaultListModel<String> listModel = new DefaultListModel<String>();
         for (String s : queryHistory){
-            listModel.addElement(s);
+            String query = s;
+            if(query.length() >= 20) query = query.substring(0, 20);
+            listModel.addElement(query);
         }
         if(listModel.isEmpty()) listModel.addElement("geschiedenis is leeg");
         History.setModel(listModel);
@@ -55,7 +56,6 @@ private ApiController apiController = new ApiController();
         SelectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //niks geselecteerd is index -1
                 if(queryHistory.isEmpty()){
                     QueryField.setText("");
                     return;
@@ -84,9 +84,9 @@ private ApiController apiController = new ApiController();
     }
 
     private String queryResultFormat(String format){
+        if(format.isEmpty()) return "";
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonElement je = JsonParser.parseString(format);
-        String returnString = gson.toJson(je);
-        return returnString;
+        return gson.toJson(je);
     }
 }

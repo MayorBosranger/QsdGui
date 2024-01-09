@@ -79,7 +79,6 @@ public class Gui extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        authorisatie.SaveKey();
         switch (e.getActionCommand()){
             case("Verzoek"):
                 pressed(verzoekItem);
@@ -104,7 +103,7 @@ public class Gui extends JFrame implements ActionListener {
                 dispose();
                 break;
             case("-"):
-                setState(Frame.ICONIFIED);;
+                setState(Frame.ICONIFIED);
                 break;
         }
     }

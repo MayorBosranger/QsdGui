@@ -11,23 +11,24 @@ public class Authorisatie{
     private JButton startAPIButton;
 
     public Authorisatie(){
-        keyTextField.setText(prefs.get("Key", "Leeg"));
+        keyTextField.setText(prefs.get("ApiKey", ""));
         keyTextField.setPreferredSize(new Dimension(400,20));
+
         startAPIButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                GetKey();
             }
         });
     }
 
     public void SaveKey(){
-        prefs.put("Key", keyTextField.getText());
+        prefs.put("ApiKey", keyTextField.getText());
     }
 
     public String GetKey(){
         SaveKey();
-        return prefs.get("Key", "Default");
+        return prefs.get("ApiKey", "");
     }
 
 }
