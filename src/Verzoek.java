@@ -17,11 +17,12 @@ public class Verzoek{
     private JButton SendButton, ClearButton, SelectButton;
     private JPanel ResponsePanel, DisplayPanel;
     private CardLayout cardLayout;
-    private List<String> queryHistory;
+    private List<String> queryHistory, displayedQueryHistory;
     private ApiController apiController = new ApiController();
 
     public Verzoek(){
         queryHistory = new ArrayList<String>();
+        displayedQueryHistory = new ArrayList<String>();
         cardLayout = new CardLayout();
         initializeButtons();
 
@@ -35,7 +36,8 @@ public class Verzoek{
         DefaultListModel<String> listModel = new DefaultListModel<String>();
         for (String s : queryHistory){
             String query = s;
-            if(query.length() >= 20) query = query.substring(0, 20);
+            if(query.startsWith("query MyQuery")) query = query.substring(13);
+            if(query.length() >= 100) query = query.substring(0, 100);
             listModel.addElement(query);
         }
         if(listModel.isEmpty()) listModel.addElement("geschiedenis is leeg");
@@ -60,10 +62,8 @@ public class Verzoek{
                     QueryField.setText("");
                     return;
                 }
-                int index = History.getSelectedIndex();
-                String s = (String) History.getSelectedValue();
-                System.out.println("Index: " + index + " - Value: "+ s);
-                QueryField.setText(s);
+
+                QueryField.setText(queryHistory.get(History.getSelectedIndex()));
             }
         });
         ClearButton.addActionListener(new ActionListener() {
@@ -76,15 +76,33 @@ public class Verzoek{
     }
 
     public void addToHistory(String s){
-        if(queryHistory.isEmpty()) queryHistory.add(s);
+        if(s == null || s.isEmpty()) return;
+        if(queryHistory.isEmpty())
+        {
+            queryHistory.add(s);
+            displayedQueryHistory.add(cleanQueryForDisplay(s));
+            return;
+        }
         String previous = queryHistory.get(queryHistory.size()-1);
 
         if(Objects.equals(previous, s)) return;
         queryHistory.add(s);
+        String displayQuery = cleanQueryForDisplay(s);
+
+        System.out.println("s : " + s.length() + " : " + s);
+        System.out.println("query : " + displayQuery.length() + " : " + displayQuery);
+    }
+
+    private String cleanQueryForDisplay(String s) {
+        String query = s.replaceAll("\n", " ");
+        query = query.replaceAll(" +", " ");// " +" is voor meerdere whitespacen
+        if(query.startsWith("query MyQuery ")) query = query.substring(14);
+        if(query.length() >= 100) query = query.substring(0, 100) + "...";
+        return query;
     }
 
     private String queryResultFormat(String format){
-        if(format.isEmpty()) return "";
+        if(format == null || format.isEmpty()) return "";
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonElement je = JsonParser.parseString(format);
         return gson.toJson(je);
