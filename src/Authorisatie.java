@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.prefs.Preferences;
-import gateway.src.main.java.nl.geostandaarden.imx.orchestrate.gateway.*;
+//import gateway.src.main.java.nl.geostandaarden.imx.orchestrate.gateway.*;
 
 public class Authorisatie{
     Preferences prefs = Preferences.userNodeForPackage(Authorisatie.class);
