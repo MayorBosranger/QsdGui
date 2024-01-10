@@ -1,0 +1,4 @@
+[submodule "imx-orchestrate-quadaster"]
+	path = imx-orchestrate-quadaster
+	url = https://github.com/Faalangst26/imx-orchestrate-quadaster.git
+	branch = dev
