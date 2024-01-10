@@ -13,8 +13,6 @@ import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,9 +29,10 @@ public class Kaart extends JPanel {
         tileFactory.setThreadPoolSize(8);
 
         // Set the focus
-        OppervlaktePainter areaPainter = new OppervlaktePainter(areaCoordinates);
-        mapViewer.setOverlayPainter(areaPainter);
-        mapViewer.setAddressLocation(areaPainter.berekenMiddelpunt());
+        GeoPosition frankfurt = new GeoPosition(52.5, 5.0);
+
+        mapViewer.setZoom(10);
+        mapViewer.setAddressLocation(frankfurt);
 
         MouseInputListener mia = new PanMouseInputListener(mapViewer);
         mapViewer.addMouseListener(mia);
@@ -61,16 +60,6 @@ public class Kaart extends JPanel {
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
                 mapViewer.setSize(Kaart.this.getSize());
-            }
-        });
-
-        mapViewer.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                if (e.getPreciseWheelRotation() > 0) {
-                    if(mapViewer.getZoom() > maximumZoomLevel)
-                        mapViewer.setZoom(17);
-                }
             }
         });
     }

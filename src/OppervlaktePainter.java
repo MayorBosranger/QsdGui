@@ -49,22 +49,4 @@ public class OppervlaktePainter implements Painter<JXMapViewer> {
 
         g.dispose();
     }
-    public GeoPosition berekenMiddelpunt() {
-        if (areaCoordinates == null || areaCoordinates.isEmpty()) {
-            throw new IllegalArgumentException("Lijst van posities mag niet leeg zijn");
-        }
-
-        double totaleLatitude = 0.0;
-        double totaleLongtitude = 0.0;
-
-        for (GeoPosition positie : areaCoordinates) {
-            totaleLatitude += positie.getLatitude();
-            totaleLongtitude += positie.getLongitude();
-        }
-
-        double gemiddeldeLat = totaleLatitude / areaCoordinates.size();
-        double gemiddeldeLon = totaleLongtitude / areaCoordinates.size();
-
-        return new GeoPosition(gemiddeldeLat, gemiddeldeLon);
-    }
 }
