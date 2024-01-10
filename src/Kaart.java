@@ -44,7 +44,7 @@ public class Kaart extends JPanel {
         List<GeoPosition> areaCoordinates = Arrays.asList(
                 new GeoPosition(54, 5.0),
                 new GeoPosition(53.6, 5.4),
-                new GeoPosition(52.1, 5.4),
+                new GeoPosition(52.1, 4.4),
                 new GeoPosition(52.3, 5.0),
                 new GeoPosition(55.2,6.5),
                 new GeoPosition(55.3,5.6)
