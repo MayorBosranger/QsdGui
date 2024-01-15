@@ -62,7 +62,7 @@ public class Verzoek{
                 addToHistory(query);
                 UpdateHistory();
                 String queryResultaat = apiController.runJsonQuery(query);
-                if(queryResultaat.contains("\"geometrie\"")) {
+                if(queryResultaat.contains("\"geometrie\"") || queryResultaat.contains("\"geometry\"")) {
                     String cordString = queryResultaat.substring(queryResultaat.indexOf("((") + 2);
                     cordString = cordString.substring(0, cordString.indexOf("))"));
                     UpdateKaart(new GeoController().ParseGeoPosition(cordString));
