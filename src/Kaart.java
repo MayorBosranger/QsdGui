@@ -47,14 +47,23 @@ public class Kaart extends JPanel {
         mapViewer.addKeyListener(new PanKeyListener(mapViewer));
 
         List<GeoPosition> areaCoordinates = Arrays.asList(
-                new GeoPosition(52.338276,5.174459),
-                new GeoPosition(52.378324,5.173828),
-                new GeoPosition(52.394249,5.247269),
-                new GeoPosition(52.371617,5.287764)
+                new GeoPosition(52.17984265967399, 5.9606851335416575),
+                new GeoPosition(52.17984909559126, 5.959732632231972),
+                new GeoPosition(52.17971555011681, 5.9597195123792215),
+                new GeoPosition(52.17970911418019, 5.959971413552031),
+                new GeoPosition(52.17960774805575, 5.959960917669831),
+                new GeoPosition(52.1796061390678, 5.959743128114173),
+                new GeoPosition(52.17946937487803, 5.959740504143623),
+                new GeoPosition(52.17945650293264, 5.960687757512209),
+                new GeoPosition(52.17959970311535, 5.960679885600558),
+                new GeoPosition(52.1796061390678, 5.960451600162699),
+                new GeoPosition(52.179713941132746, 5.96045422413325),
+                new GeoPosition(52.1797123321486, 5.960682509571108)
         );
 
         OppervlaktePainter areaPainter = new OppervlaktePainter(areaCoordinates);
         mapViewer.setOverlayPainter(areaPainter);
+        mapViewer.setZoom(1);
         mapViewer.setAddressLocation(areaPainter.berekenMiddelpunt());
 
 

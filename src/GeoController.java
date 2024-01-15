@@ -8,7 +8,7 @@ public class GeoController {
         ArrayList<GeoPosition> result = new ArrayList<GeoPosition>();
         if(input == null || input.isEmpty()) return result;
         String[] positions = input.split(",");
-        for(String s : positions){
+        for(String position : positions){
             if(s.isEmpty()) continue;
             String[] coords = s.trim().split(" ");
             result.add(new GeoPosition(Double.parseDouble(coords[1]), Double.parseDouble(coords[0])));
