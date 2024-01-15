@@ -78,10 +78,10 @@ public class Gui extends JFrame implements ActionListener {
     }
 
     private void setUpPanels(){
-        verzoek = new Verzoek();
         authorisatie = new Authorisatie();
         instellingen = new Instellingen();
         kaart = new Kaart();
+        verzoek = new Verzoek(kaart);
         cardLayout = new CardLayout();
 
         mainPanel = new JPanel(cardLayout);

@@ -15,6 +15,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -76,5 +77,11 @@ public class Kaart extends JPanel {
                 }
             }
         });
+    }
+
+    public void SetAreaPainter(ArrayList<GeoPosition> points){
+        OppervlaktePainter areaPainter = new OppervlaktePainter(points);
+        mapViewer.setOverlayPainter(areaPainter);
+        mapViewer.setAddressLocation(areaPainter.berekenMiddelpunt());
     }
 }
