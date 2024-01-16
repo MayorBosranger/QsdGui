@@ -30,11 +30,7 @@ public class Kaart extends JPanel {
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
         mapViewer.setTileFactory(tileFactory);
 
-        // Use 8 threads in parallel to load the tiles
         tileFactory.setThreadPoolSize(8);
-
-        // Set the focus
-        GeoPosition frankfurt = new GeoPosition(52.5, 5.0);
 
         mapViewer.setZoom(7);
         mapViewer.setPanEnabled(true);
@@ -70,7 +66,6 @@ public class Kaart extends JPanel {
         this.setLayout(new BorderLayout());
         this.add(mapViewer, BorderLayout.CENTER);
 
-        // Resize listener
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
                 mapViewer.setSize(Kaart.this.getSize());

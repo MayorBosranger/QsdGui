@@ -18,18 +18,14 @@ public class OppervlaktePainter implements Painter<JXMapViewer> {
     public void paint(Graphics2D g, JXMapViewer map, int w, int h) {
         g = (Graphics2D) g.create();
 
-        // converteert van GEO naar wereld bitmap in pixel
         Path2D path = new Path2D.Double();
         boolean first = true;
 
-        // Huidige viewport om de offset aanpassen
         Rectangle rect = map.getViewportBounds();
 
         for (GeoPosition gp : areaCoordinates) {
-            // Converteert naar wereld bitmap pixel
             Point2D pt = map.getTileFactory().geoToPixel(gp, map.getZoom());
 
-            // past de punt aan naar de huidige viewpoint.
             double x = pt.getX() - rect.getX();
             double y = pt.getY() - rect.getY();
 
