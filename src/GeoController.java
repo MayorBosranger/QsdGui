@@ -9,8 +9,8 @@ public class GeoController {
         if(input == null || input.isEmpty()) return result;
         String[] positions = input.split(",");
         for(String position : positions){
-            if(s.isEmpty()) continue;
-            String[] coords = s.trim().split(" ");
+            if(position.isEmpty()) continue;
+            String[] coords = position.trim().split(" ");
             result.add(new GeoPosition(Double.parseDouble(coords[1]), Double.parseDouble(coords[0])));
         }
         return result;
