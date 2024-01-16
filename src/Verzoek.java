@@ -46,8 +46,8 @@ public class Verzoek{
 
     public void UpdateHistory(){
         DefaultListModel<String> listModel = new DefaultListModel<String>();
-        for (String s : displayedQueryHistory){
-            listModel.addElement(s);
+        for (String query : displayedQueryHistory){
+            listModel.addElement(query);
         }
         if(listModel.isEmpty()) listModel.addElement("geschiedenis is leeg");
         History.setModel(listModel);
