@@ -50,6 +50,7 @@ public class ApiController {
 
         } catch (IOException e) {
             e.printStackTrace();
+            return e.toString();
         }
         return result;
     }
