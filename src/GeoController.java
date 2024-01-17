@@ -1,7 +1,6 @@
 import org.jxmapviewer.viewer.GeoPosition;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class GeoController {
     public static ArrayList<GeoPosition> ParseGeoPosition(String input){
@@ -16,19 +15,18 @@ public class GeoController {
         return result;
     }
 
-    //TODO: Dit moet nog worden geimplementeerd en verbeterd. Dit werkt namelijk voor grid coördinaten en niet lengte/breedte-graden.
-    public double BerekenOppervlakte(double[] xCoordinaten, double[] yCoordinaten) throws Exception {
-        if(xCoordinaten.length != yCoordinaten.length) throw new Exception("lengte van arrays verschilt");
+    public double CalculateSurfaceArea(double[] xCoordinates, double[] yCoordinates) throws Exception {
+        if(xCoordinates.length != yCoordinates.length) throw new Exception("lengte van arrays verschilt");
 
-        double oppervlakte = 0;
-        int aantalCoordinaten = xCoordinaten.length;
+        double surface = 0;
+        int amountOfCoordinates = xCoordinates.length;
 
-        for (int i = 0; i < aantalCoordinaten; i++) {
-            int nextI = (i+1)%aantalCoordinaten;
-            oppervlakte += xCoordinaten[i]*yCoordinaten[nextI] - yCoordinaten[i]*xCoordinaten[nextI];
+        for (int i = 0; i < amountOfCoordinates; i++) {
+            int nextI = (i+1)%amountOfCoordinates;
+            surface += xCoordinates[i]*yCoordinates[nextI] - yCoordinates[i]*xCoordinates[nextI];
         }
 
-        if(oppervlakte < 0) oppervlakte = -oppervlakte;
-        return oppervlakte/2;
+        if(surface < 0) surface = -surface;
+        return surface/2;
     }
 }

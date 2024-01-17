@@ -8,28 +8,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Verzoek{
-    public JPanel verzoekPanel;
-    private JTextArea QueryField, ResultaatArea;
+public class Request {
+    public JPanel requestPanel;
+    private JTextArea QueryField, ResultArea;
     private JList History;
     private JButton SendButton, ClearButton, SelectButton;
     private JPanel ResponsePanel, DisplayPanel;
     private CardLayout cardLayout;
     private List<String> queryHistory, displayedQueryHistory;
-    private Kaart kaart;
+    private Map map;
 
-    public Verzoek(){
+    public Request(){
         BaseInitialise();
     }
 
-    public Verzoek(Kaart kaart){
+    public Request(Map map){
         BaseInitialise();
-        this.kaart = kaart;
+        this.map = map;
     }
 
     private void BaseInitialise(){
@@ -61,18 +60,14 @@ public class Verzoek{
                 if(query == null || query.isEmpty()) return;
                 addToHistory(query);
                 UpdateHistory();
-                String queryResultaat = ApiController.runJsonQuery(query);
-                try {
-                    if (queryResultaat.contains("\"geometrie\"") || queryResultaat.contains("\"geometry\"")) {
-                        String cordString = queryResultaat.substring(queryResultaat.indexOf("((") + 2);
-                        cordString = cordString.substring(0, cordString.indexOf("))"));
-                        UpdateKaart(GeoController.ParseGeoPosition(cordString));
-                    }
-                } catch (java.lang.NumberFormatException error) {
-                    queryResultaat = "[{ \"Kon coordinaten niet goed parsen\": 1 }]";
+                String queryResult = ApiController.runJsonQuery(query);
+                if(queryResult.contains("\"geometrie\"") || queryResult.contains("\"geometry\"")) {
+                    String cordString = queryResult.substring(queryResult.indexOf("((") + 2);
+                    cordString = cordString.substring(0, cordString.indexOf("))"));
+                    UpdateMap(GeoController.ParseGeoPosition(cordString));
                 }
-                String resultaat = queryResultFormat(queryResultaat);
-                ResultaatArea.setText(resultaat);
+                String Result = queryResultFormat(queryResult);
+                ResultArea.setText(Result);
             }
         });
         SelectButton.addActionListener(new ActionListener() {
@@ -126,7 +121,7 @@ public class Verzoek{
         return gson.toJson(je);
     }
 
-    private void UpdateKaart(ArrayList<GeoPosition> points){
-        kaart.SetAreaPainter(points);
+    private void UpdateMap(ArrayList<GeoPosition> points){
+        map.SetAreaPainter(points);
     }
 }

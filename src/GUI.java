@@ -6,15 +6,15 @@ import java.awt.event.*;
 
 public class GUI extends JFrame implements ActionListener {
     private CardLayout cardLayout;
-    private Verzoek verzoek;
-    private Authorisatie authorisatie;
-    private Kaart kaart;
+    private Request request;
+    private Authorisation authorisation;
+    private Map map;
     private JPanel mainPanel;
 
     JMenuBar Menubar;
-    JMenuItem verzoekItem = new JMenuItem("Verzoek");
-    JMenuItem authorisatieItem = new JMenuItem("Authorisatie");
-    JMenuItem kaartItem = new JMenuItem("Kaart");
+    JMenuItem RequestItem = new JMenuItem("Verzoek");
+    JMenuItem AuthorisationItem = new JMenuItem("Authorisatie");
+    JMenuItem MapItem = new JMenuItem("Kaart");
 
     public GUI(){
         FlatLightLaf.setup();
@@ -32,12 +32,12 @@ public class GUI extends JFrame implements ActionListener {
     private void MakeMenuBar(){
         Menubar = new JMenuBar();
         menubarLayout();
-        verzoekItem.addActionListener(this);
-        authorisatieItem.addActionListener(this);
-        kaartItem.addActionListener(this);
-        Menubar.add(verzoekItem);
-        Menubar.add(authorisatieItem);
-        Menubar.add(kaartItem);
+        RequestItem.addActionListener(this);
+        AuthorisationItem.addActionListener(this);
+        MapItem.addActionListener(this);
+        Menubar.add(RequestItem);
+        Menubar.add(AuthorisationItem);
+        Menubar.add(MapItem);
         Menubar.add(Box.createHorizontalGlue());
     }
 
@@ -45,7 +45,7 @@ public class GUI extends JFrame implements ActionListener {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                authorisatie.SaveKey();
+                authorisation.SaveKey();
                 super.windowClosing(e);
             }
         });
@@ -53,9 +53,9 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     private void menubarLayout(){
-        verzoekItem.setMaximumSize(new Dimension(150, 100));
-        authorisatieItem.setMaximumSize(new Dimension(150, 100));
-        kaartItem.setMaximumSize(new Dimension(150, 100));
+        RequestItem.setMaximumSize(new Dimension(150, 100));
+        AuthorisationItem.setMaximumSize(new Dimension(150, 100));
+        MapItem.setMaximumSize(new Dimension(150, 100));
     }
 
     private void pressed(JMenuItem item){
@@ -69,40 +69,40 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     private void unPressAll(){
-        unPressed(verzoekItem);
-        unPressed(authorisatieItem);
-        unPressed(kaartItem);
+        unPressed(RequestItem);
+        unPressed(AuthorisationItem);
+        unPressed(MapItem);
     }
 
     private void setUpPanels(){
-        authorisatie = new Authorisatie();
-        kaart = new Kaart();
-        verzoek = new Verzoek(kaart);
+        authorisation = new Authorisation();
+        map = new Map();
+        request = new Request(map);
         cardLayout = new CardLayout();
 
         mainPanel = new JPanel(cardLayout);
         add(mainPanel);
-        mainPanel.add(verzoek.verzoekPanel, "verzoek");
-        mainPanel.add(authorisatie.AuthorisatiePanel, "authorisatie");
-        mainPanel.add(kaart, "kaart");
-        cardLayout.show(mainPanel, "verzoek");
-        pressed(verzoekItem);
+        mainPanel.add(request.requestPanel, "request");
+        mainPanel.add(authorisation.AuthorisationPanel, "authorisation");
+        mainPanel.add(map, "map");
+        cardLayout.show(mainPanel, "request");
+        pressed(RequestItem);
     }
 
     public void actionPerformed(ActionEvent e) {
         unPressAll();
         switch (e.getActionCommand()){
             case("Verzoek"):
-                pressed(verzoekItem);
-                cardLayout.show(mainPanel, "verzoek");
+                pressed(RequestItem);
+                cardLayout.show(mainPanel, "request");
                 break;
             case ("Authorisatie"):
-                pressed(authorisatieItem);
-                cardLayout.show(mainPanel, "authorisatie");
+                pressed(AuthorisationItem);
+                cardLayout.show(mainPanel, "authorisation");
                 break;
             case("Kaart"):
-                pressed(kaartItem);
-                cardLayout.show(mainPanel, "kaart");
+                pressed(MapItem);
+                cardLayout.show(mainPanel, "map");
                 break;
         }
     }
