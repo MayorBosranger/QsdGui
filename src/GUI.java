@@ -1,8 +1,10 @@
+import com.formdev.flatlaf.FlatLightLaf;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Gui extends JFrame implements ActionListener {
+public class GUI extends JFrame implements ActionListener {
     private CardLayout cardLayout;
     private Verzoek verzoek;
     private Authorisatie authorisatie;
@@ -14,7 +16,8 @@ public class Gui extends JFrame implements ActionListener {
     JMenuItem authorisatieItem = new JMenuItem("Authorisatie");
     JMenuItem kaartItem = new JMenuItem("Kaart");
 
-    public Gui(){
+    public GUI(){
+        FlatLightLaf.setup();
         setPreferredSize(new Dimension(1000,600));
 
         MakeMenuBar();
