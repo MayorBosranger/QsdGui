@@ -7,10 +7,10 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.List;
 
-public class OppervlaktePainter implements Painter<JXMapViewer> {
+public class AreaPainter implements Painter<JXMapViewer> {
     private final List<GeoPosition> areaCoordinates;
 
-    public OppervlaktePainter(List<GeoPosition> areaCoordinates) {
+    public AreaPainter(List<GeoPosition> areaCoordinates) {
         this.areaCoordinates = areaCoordinates;
     }
 
@@ -45,7 +45,7 @@ public class OppervlaktePainter implements Painter<JXMapViewer> {
 
         g.dispose();
     }
-    public GeoPosition berekenMiddelpunt() {
+    public GeoPosition CalculateCenterPoint() {
         if (areaCoordinates == null || areaCoordinates.isEmpty()) {
             throw new IllegalArgumentException("Lijst van posities mag niet leeg zijn");
         }

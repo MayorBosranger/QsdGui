@@ -4,15 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.prefs.Preferences;
 
-public class Authorisatie{
-    Preferences prefs = Preferences.userNodeForPackage(Authorisatie.class);
-    private JTextField keyTextField;
-    public JPanel AuthorisatiePanel;
+public class Authorisation {
+    Preferences prefs = Preferences.userNodeForPackage(Authorisation.class);
+    private JTextField APIkeyTextField;
+    public JPanel AuthorisationPanel;
     private JButton startAPIButton;
 
-    public Authorisatie(){
-        keyTextField.setText(prefs.get("ApiKey", ""));
-        keyTextField.setPreferredSize(new Dimension(400,20));
+    public Authorisation(){
+        APIkeyTextField.setText(prefs.get("ApiKey", ""));
+        APIkeyTextField.setPreferredSize(new Dimension(400,20));
 
         startAPIButton.addActionListener(new ActionListener() {
             @Override
@@ -23,7 +23,7 @@ public class Authorisatie{
     }
 
     public void SaveKey(){
-        prefs.put("ApiKey", keyTextField.getText());
+        prefs.put("ApiKey", APIkeyTextField.getText());
     }
 
     public String GetKey(){

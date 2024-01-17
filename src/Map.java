@@ -19,12 +19,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Kaart extends JPanel {
+public class Map extends JPanel {
     private JXMapViewer mapViewer;
     private final int maximumZoomLevel = 17; // max zoomniveau
 
 
-    public Kaart(){
+    public Map(){
         mapViewer = new JXMapViewer();
         TileFactoryInfo info = new OSMTileFactoryInfo();
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
@@ -57,10 +57,10 @@ public class Kaart extends JPanel {
                 new GeoPosition(52.1797123321486, 5.960682509571108)
         );
 
-        OppervlaktePainter areaPainter = new OppervlaktePainter(areaCoordinates);
+        AreaPainter areaPainter = new AreaPainter(areaCoordinates);
         mapViewer.setOverlayPainter(areaPainter);
         mapViewer.setZoom(1);
-        mapViewer.setAddressLocation(areaPainter.berekenMiddelpunt());
+        mapViewer.setAddressLocation(areaPainter.CalculateCenterPoint());
 
 
         this.setLayout(new BorderLayout());
@@ -68,7 +68,7 @@ public class Kaart extends JPanel {
 
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
-                mapViewer.setSize(Kaart.this.getSize());
+                mapViewer.setSize(Map.this.getSize());
             }
         });
 
@@ -84,8 +84,8 @@ public class Kaart extends JPanel {
     }
 
     public void SetAreaPainter(ArrayList<GeoPosition> points){
-        OppervlaktePainter areaPainter = new OppervlaktePainter(points);
+        AreaPainter areaPainter = new AreaPainter(points);
         mapViewer.setOverlayPainter(areaPainter);
-        mapViewer.setAddressLocation(areaPainter.berekenMiddelpunt());
+        mapViewer.setAddressLocation(areaPainter.CalculateCenterPoint());
     }
 }
