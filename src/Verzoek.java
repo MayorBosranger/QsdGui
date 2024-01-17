@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -61,10 +62,14 @@ public class Verzoek{
                 addToHistory(query);
                 UpdateHistory();
                 String queryResultaat = ApiController.runJsonQuery(query);
-                if(queryResultaat.contains("\"geometrie\"") || queryResultaat.contains("\"geometry\"")) {
-                    String cordString = queryResultaat.substring(queryResultaat.indexOf("((") + 2);
-                    cordString = cordString.substring(0, cordString.indexOf("))"));
-                    UpdateKaart(GeoController.ParseGeoPosition(cordString));
+                try {
+                    if (queryResultaat.contains("\"geometrie\"") || queryResultaat.contains("\"geometry\"")) {
+                        String cordString = queryResultaat.substring(queryResultaat.indexOf("((") + 2);
+                        cordString = cordString.substring(0, cordString.indexOf("))"));
+                        UpdateKaart(GeoController.ParseGeoPosition(cordString));
+                    }
+                } catch (java.lang.NumberFormatException error) {
+                    queryResultaat = "[{ \"Kon coordinaten niet goed parsen\": 1 }]";
                 }
                 String resultaat = queryResultFormat(queryResultaat);
                 ResultaatArea.setText(resultaat);
