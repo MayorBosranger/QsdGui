@@ -20,7 +20,6 @@ public class Verzoek{
     private JPanel ResponsePanel, DisplayPanel;
     private CardLayout cardLayout;
     private List<String> queryHistory, displayedQueryHistory;
-    private ApiController apiController = new ApiController();
     private Kaart kaart;
 
     public Verzoek(){
@@ -61,11 +60,11 @@ public class Verzoek{
                 if(query == null || query.isEmpty()) return;
                 addToHistory(query);
                 UpdateHistory();
-                String queryResultaat = apiController.runJsonQuery(query);
+                String queryResultaat = ApiController.runJsonQuery(query);
                 if(queryResultaat.contains("\"geometrie\"") || queryResultaat.contains("\"geometry\"")) {
                     String cordString = queryResultaat.substring(queryResultaat.indexOf("((") + 2);
                     cordString = cordString.substring(0, cordString.indexOf("))"));
-                    UpdateKaart(new GeoController().ParseGeoPosition(cordString));
+                    UpdateKaart(GeoController.ParseGeoPosition(cordString));
                 }
                 String resultaat = queryResultFormat(queryResultaat);
                 ResultaatArea.setText(resultaat);

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GeoController {
-    public ArrayList<GeoPosition> ParseGeoPosition(String input){
+    public static ArrayList<GeoPosition> ParseGeoPosition(String input){
         ArrayList<GeoPosition> result = new ArrayList<GeoPosition>();
         if(input == null || input.isEmpty()) return result;
         String[] positions = input.split(",");

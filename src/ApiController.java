@@ -7,7 +7,7 @@ import java.net.URL;
 
 public class ApiController {
 
-    public String runJsonQuery(String query){
+    public static String runJsonQuery(String query){
         String result = null;
         try {
             // Replace the URL with the actual GraphQL endpoint
@@ -55,7 +55,7 @@ public class ApiController {
         return result;
     }
 
-    private String escapeDoubleQuotes(String input) {
+    private static String escapeDoubleQuotes(String input) {
         return input.replace("\"", "\\\"").replace("\n", "\\n");
     }
 }
