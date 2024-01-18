@@ -11,7 +11,7 @@ public class Authorisation {
     private JButton startAPIButton;
 
     public Authorisation(){
-        APIkeyTextField.setText(prefs.get("ApiKey", ""));
+        APIkeyTextField.setText(prefs.get("ApiKey", "Leeg"));
         APIkeyTextField.setPreferredSize(new Dimension(400,20));
 
         startAPIButton.addActionListener(new ActionListener() {
