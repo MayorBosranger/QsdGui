@@ -60,14 +60,18 @@ public class Request {
                 if(query == null || query.isEmpty()) return;
                 addToHistory(query);
                 UpdateHistory();
-                String queryResult = ApiController.runJsonQuery(query);
-                if(queryResult.contains("\"geometrie\"") || queryResult.contains("\"geometry\"")) {
-                    String cordString = queryResult.substring(queryResult.indexOf("((") + 2);
-                    cordString = cordString.substring(0, cordString.indexOf("))"));
-                    UpdateMap(GeoController.ParseGeoPosition(cordString));
+                String QueryResult = ApiController.runJsonQuery(query);
+                try {
+                    if (QueryResult.contains("\"geometrie\"") || QueryResult.contains("\"geometry\"")) {
+                        String cordString = QueryResult.substring(QueryResult.indexOf("((") + 2);
+                        cordString = cordString.substring(0, cordString.indexOf("))"));
+                        UpdateMap(GeoController.ParseGeoPosition(cordString));
+                    }
+                } catch (java.lang.NumberFormatException error) {
+                    QueryResult = "[{ \"Kon coordinaten niet goed parsen\": 1 }]";
                 }
-                String Result = queryResultFormat(queryResult);
-                ResultArea.setText(Result);
+                String result = queryResultFormat(QueryResult);
+                ResultArea.setText(result);
             }
         });
         SelectButton.addActionListener(new ActionListener() {
