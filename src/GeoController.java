@@ -16,6 +16,7 @@ public class GeoController {
         return result;
     }
 
+    //TODO: Dit moet nog worden geimplementeerd en verbeterd. Dit werkt namelijk voor grid coördinaten en niet lengte/breedte-graden.
     public double BerekenOppervlakte(double[] xCoordinaten, double[] yCoordinaten) throws Exception {
         if(xCoordinaten.length != yCoordinaten.length) throw new Exception("lengte van arrays verschilt");
 
