@@ -1,3 +1,5 @@
+package Main;
+
 import org.jxmapviewer.viewer.GeoPosition;
 
 import java.util.ArrayList;
