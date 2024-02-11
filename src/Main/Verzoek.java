@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -62,7 +63,8 @@ public class Verzoek{
                 if(query == null || query.isEmpty()) return;
                 addToHistory(query);
                 UpdateHistory();
-                String queryResultaat = ApiController.runJsonQuery(query);
+                ApiController BestuurlijkeGrenzen = new ApiController("http://localhost:8081/graphql");
+                String queryResultaat = BestuurlijkeGrenzen.runJsonQuery(query);
                 try {
                     if (queryResultaat.contains("\"geometrie\"") || queryResultaat.contains("\"geometry\"")) {
                         String cordString = queryResultaat.substring(queryResultaat.indexOf("((") + 2);

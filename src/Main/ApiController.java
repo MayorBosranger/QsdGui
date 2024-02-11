@@ -10,11 +10,21 @@ import java.net.ProtocolException;
 import java.net.URL;
 
 public class ApiController {
+    private HttpURLConnection connection;
+    private URL APIUrl;
 
-    public static String runJsonQuery(String query){
+    public ApiController(String Url){
+        try {
+            APIUrl = new URL(Url);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String runJsonQuery(String query){
         String result = null;
         try {
-            HttpURLConnection connection = startConnection();
+            connection = startConnection();
             String jsonRequest = prepareJsonQuery(query);
             try(OutputStream os = connection.getOutputStream()) {
                 byte[] input = jsonRequest.getBytes("utf-8");
@@ -30,11 +40,11 @@ public class ApiController {
         return result;
     }
 
-    public static HttpURLConnection startConnection(){
+    public HttpURLConnection startConnection(){
         HttpURLConnection connection;
         try {
-            URL apiUrl = new URL("http://localhost:8081/graphql");
-            connection = (HttpURLConnection) apiUrl.openConnection();
+            URL url = APIUrl;
+            connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Accept", "application/json");
@@ -45,7 +55,7 @@ public class ApiController {
         return connection;
     }
 
-    public static String sendQuery(HttpURLConnection connection){
+    public String sendQuery(HttpURLConnection connection){
         try(BufferedReader br = new BufferedReader(
                 new InputStreamReader(connection.getInputStream(), "utf-8"))) {
             StringBuilder response = new StringBuilder();
@@ -59,7 +69,7 @@ public class ApiController {
         }
     }
 
-    private static String prepareJsonQuery(String query) {
+    private String prepareJsonQuery(String query) {
         String json = "{\"query\": \"" + query.replace("\"", "\\\"").replace("\n", "\\n") + "\",\"operationName\": \"MyQuery\"}";
         return json;
     }
